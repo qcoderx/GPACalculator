@@ -26,7 +26,7 @@
                 <div id="courses1" class="courses">
                     <!-- Course fields will be dynamically added here -->
                 </div>
-                <button id="add-course1">Add Course</button>
+                <button id="add-course1" class="add-course-btn">Add Course</button>
             </div>
 
             <div id="semester2" class="tab-content">
@@ -34,7 +34,7 @@
                 <div id="courses2" class="courses">
                     <!-- Course fields will be dynamically added here -->
                 </div>
-                <button id="add-course2">Add Course</button>
+                <button id="add-course2" class="add-course-btn">Add Course</button>
             </div>
         </main>
 
@@ -42,6 +42,16 @@
             <button id="calculate-gpa">Calculate GPA</button>
             <div id="results"></div>
         </footer>
+    </div>
+
+    <div class="footer">
+        <p>This CGPA Calculator was created by Platinum to help students track their academic performance.</p>
+        <p>Contact Information:</p>
+        <ul>
+            <li><i class="fab fa-whatsapp"></i> WhatsApp: <a href="https://wa.me/your_number_here">Your Number Here</a></li>
+            <li><i class="fas fa-envelope"></i> Email: <a href="mailto:qiasisi5@gmail.com">qiasisi5@gmail.com</a></li>
+        </ul>
+        <p>&copy; 2023 CGPA Calculator by Platinum. All rights reserved.</p>
     </div>
 
     <script src="script.js"></script>
@@ -57,6 +67,8 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
 }
 
 .container {
@@ -164,6 +176,21 @@ nav {
     background: #cf3a2d;
 }
 
+.add-course-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #673ab7;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.add-course-btn:hover {
+    background: #5c35a1;
+}
+
 footer {
     margin-top: 20px;
 }
@@ -222,6 +249,27 @@ footer button:hover {
     border: 1px solid #d6e9c6;
     border-radius: 5px;
     margin-top: 20px;
+}
+
+.footer {
+    margin-top: 20px;
+    padding: 20px;
+    background: #2c3e50;
+    color: #fff;
+    text-align: center;
+}
+
+.footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.fab, .fas {
+    margin-right: 5px;
 }
 </style>
 </html>
