@@ -1,3 +1,4 @@
+alert("Just a simple CGPA CALCULATOR, special thanks to Shaz-d-Techbro on this one!")
 document.addEventListener('DOMContentLoaded', function () {
 
   // SEMESTER TAB TOGGLE
