@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CGPA Calculator</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="container">
@@ -16,8 +17,12 @@
         </header>
 
         <nav>
-            <button class="tab-btn active" data-tab="semester1">Semester 1</button>
-            <button class="tab-btn" data-tab="semester2">Semester 2</button>
+            <table class="semester-table">
+                <tr>
+                    <td><button class="tab-btn active" data-tab="semester1">Semester 1</button></td>
+                    <td><button class="tab-btn" data-tab="semester2">Semester 2</button></td>
+                </tr>
+            </table>
         </nav>
 
         <main>
@@ -39,7 +44,7 @@
         </main>
 
         <footer>
-            <button id="calculate-gpa">Calculate GPA</button>
+            <button id="calculate-gpa" class="calculate-gpa-btn">Calculate GPA</button>
             <div id="results"></div>
         </footer>
     </div>
@@ -48,10 +53,10 @@
         <p>This CGPA Calculator was created by Platinum to help students track their academic performance.</p>
         <p>Contact Information:</p>
         <ul>
-            <li><i class="fab fa-whatsapp"></i> WhatsApp: <a href="https://wa.me/your_number_here">Your Number Here</a></li>
-            <li><i class="fas fa-envelope"></i> Email: <a href="mailto:qiasisi5@gmail.com">qiasisi5@gmail.com</a></li>
+            <li><i class="fab fa-whatsapp"></i> WhatsApp: <a href="https://wa.me/2349025713730">Message me on whatsapp</a></li>
+            <li><i class="fas fa-envelope"></i> Email: <a href="mailto:qlasisi15@gmail.com">qlasisi15@gmail.com</a></li>
         </ul>
-        <p>&copy; 2023 CGPA Calculator by Platinum. All rights reserved.</p>
+        <p>&copy; 2025 CGPA Calculator by Platinum. All rights reserved.</p>
     </div>
 
     <script src="script.js"></script>
@@ -87,12 +92,15 @@ header {
 
 header h1 {
     color: #333;
-    font-size: 24px;
+    font-size: 32px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 header p {
     color: #666;
-    font-size: 16px;
+    font-size: 18px;
+    margin-top: 5px;
 }
 
 header button {
@@ -104,6 +112,7 @@ header button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 header button:hover {
@@ -111,9 +120,17 @@ header button:hover {
 }
 
 nav {
-    display: flex;
-    justify-content: space-around;
     margin: 20px 0;
+}
+
+.semester-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.semester-table td {
+    padding: 10px;
+    text-align: center;
 }
 
 .tab-btn {
@@ -124,6 +141,7 @@ nav {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 .tab-btn.active {
@@ -133,10 +151,12 @@ nav {
 
 .tab-content {
     display: none;
+    transition: opacity 0.3s ease;
 }
 
 .tab-content.active {
     display: block;
+    opacity: 1;
 }
 
 .courses {
@@ -170,6 +190,7 @@ nav {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 .course .remove-btn:hover {
@@ -185,28 +206,33 @@ nav {
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
+    transition: background 0.3s ease;
 }
 
 .add-course-btn:hover {
     background: #5c35a1;
 }
 
-footer {
-    margin-top: 20px;
-}
-
-footer button {
-    padding: 10px 20px;
-    font-size: 16px;
+.calculate-gpa-btn {
+    display: block;
+    margin: 0 auto;
+    padding: 15px 40px;
+    font-size: 18px;
     background: #673ab7;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background 0.3s ease;
+    width: 80%; /* Horizontally longer */
 }
 
-footer button:hover {
+.calculate-gpa-btn:hover {
     background: #5c35a1;
+}
+
+footer {
+    margin-top: 20px;
 }
 
 #results {
