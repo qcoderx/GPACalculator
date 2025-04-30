@@ -1,398 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>CGPA Calculator</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CGPA Calculator</h1>
+            <p>Created by Platinum</p>
+            <button id="export-pdf">Export as PDF</button>
+            <button id="export-png">Export as PNG</button>
+        </header>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <nav>
+            <button class="tab-btn active" data-tab="semester1">Semester 1</button>
+            <button class="tab-btn" data-tab="semester2">Semester 2</button>
+        </nav>
 
+        <main>
+            <div id="semester1" class="tab-content active">
+                <h2>Semester 1 Courses</h2>
+                <div id="courses1" class="courses">
+                    <!-- Course fields will be dynamically added here -->
+                </div>
+                <button id="add-course1">Add Course</button>
+            </div>
+
+            <div id="semester2" class="tab-content">
+                <h2>Semester 2 Courses</h2>
+                <div id="courses2" class="courses">
+                    <!-- Course fields will be dynamically added here -->
+                </div>
+                <button id="add-course2">Add Course</button>
+            </div>
+        </main>
+
+        <footer>
+            <button id="calculate-gpa">Calculate GPA</button>
+            <div id="results"></div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
 <style>
+    /* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background: #f8f9fa;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    transition: background 0.3s, color 0.3s;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
 }
 
-.calculator-card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    padding: 30px;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    transition: background 0.3s, color 0.3s;
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-h2, h4 {
-    font-weight: 700;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
+header {
+    text-align: center;
     margin-bottom: 20px;
 }
 
-table th, table td {
-    text-align: center;
-    vertical-align: middle;
-    padding: 12px 8px;
+header h1 {
+    color: #333;
+    font-size: 24px;
 }
 
-table th {
-    background-color: #343a40;
-    color: white;
+header p {
+    color: #666;
+    font-size: 16px;
 }
 
-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
+header button {
+    margin: 10px 5px;
+    padding: 10px 20px;
+    font-size: 14px;
+    background: #673ab7;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-button.btn {
-    border-radius: 8px;
+header button:hover {
+    background: #5c35a1;
 }
 
-.input-group > input {
-    border-radius: 8px;
+nav {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
 }
 
-.remove-btn {
-    white-space: nowrap;
+.tab-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #fff;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-.classification-text {
-    font-weight: bold;
-    font-size: 1.2rem;
-    color: #0d6efd;
+.tab-btn.active {
+    background: #673ab7;
+    color: #fff;
 }
 
-.export-btn {
-    margin-right: 10px;
-    border-radius: 8px;
+.tab-content {
+    display: none;
 }
 
-@media (max-width: 768px) {
-    table th, table td {
-        font-size: 12px;
-        padding: 8px 4px;
-    }
+.tab-content.active {
+    display: block;
 }
 
-/* Dark Mode Styles */
-body.dark-mode {
-    background: #121212;
-    color: #f1f1f1;
+.courses {
+    margin-bottom: 20px;
 }
 
-body.dark-mode .calculator-card {
-    background: #1e1e1e;
-    color: #f1f1f1;
+.course {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
 }
 
-body.dark-mode table th {
-    background-color: #212529;
+.course label {
+    font-size: 14px;
+    margin-bottom: 5px;
 }
 
-body.dark-mode table tbody tr:nth-child(even) {
-    background-color: #2c2c2c;
+.course input, .course select {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
 }
 
-body.dark-mode .alert-primary {
-    background-color: #0d6efd !important;
-    color: white !important;
+.course .remove-btn {
+    margin-top: 10px;
+    padding: 10px;
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-body.dark-mode .alert-success {
-    background-color: #198754 !important;
-    color: white !important;
+.course .remove-btn:hover {
+    background: #cf3a2d;
 }
 
-body.dark-mode .alert-dark {
-    background-color: #343a40 !important;
-    color: white !important;
+footer {
+    margin-top: 20px;
+}
+
+footer button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #673ab7;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+footer button:hover {
+    background: #5c35a1;
+}
+
+#results {
+    margin-top: 20px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#results h2 {
+    color: #333;
+    font-size: 20px;
+}
+
+#results p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+#results table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#results table th, #results table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#results table th {
+    background: #f4f4f9;
+}
+
+#results .classification {
+    background: #dff0d8;
+    padding: 10px;
+    border: 1px solid #d6e9c6;
+    border-radius: 5px;
+    margin-top: 20px;
 }
 </style>
-
-</head>
-<body>
-
-<div class="container">
-    <div class="d-flex justify-content-end mt-3">
-        <button class="btn btn-outline-secondary btn-sm" onclick="toggleDarkMode()">Toggle Dark Mode</button>
-    </div>
-
-    <div class="calculator-card">
-        <h2>CGPA Calculator</h2>
-
-        <div class="row g-3 mb-3">
-            <div class="col-md-3">
-                <input type="text" id="course-code" class="form-control form-control-sm" placeholder="Course Code">
-            </div>
-            <div class="col-md-3">
-                <input type="text" id="course-title" class="form-control form-control-sm" placeholder="Course Title">
-            </div>
-            <div class="col-md-2">
-                <input type="number" id="course-units" class="form-control form-control-sm" placeholder="Units">
-            </div>
-            <div class="col-md-2">
-                <input type="number" id="course-score" class="form-control form-control-sm" placeholder="Score">
-            </div>
-            <div class="col-md-2 d-grid">
-                <button class="btn btn-primary btn-sm" onclick="addCourse(1)">Add to Semester 1</button>
-                <button class="btn btn-success btn-sm mt-1" onclick="addCourse(2)">Add to Semester 2</button>
-            </div>
-        </div>
-
-        <h4>Semester 1</h4>
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>Code</th>
-                    <th>Title</th>
-                    <th>Units</th>
-                    <th>Score</th>
-                    <th>Grade</th>
-                    <th>Grade Point</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="semester1-courses"></tbody>
-        </table>
-
-        <h4>Semester 2</h4>
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>Code</th>
-                    <th>Title</th>
-                    <th>Units</th>
-                    <th>Score</th>
-                    <th>Grade</th>
-                    <th>Grade Point</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="semester2-courses"></tbody>
-        </table>
-
-        <div class="row g-3 mt-4">
-            <div class="col-md-4">
-                <div class="alert alert-primary text-center">
-                    Semester 1 GPA: <strong id="semester1-gpa">0.00</strong>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="alert alert-success text-center">
-                    Semester 2 GPA: <strong id="semester2-gpa">0.00</strong>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="alert alert-dark text-center">
-                    CGPA: <strong id="cgpa">0.00</strong>
-                </div>
-            </div>
-        </div>
-
-        <p class="text-center classification-text mt-3" id="classification">Your classification will appear here.</p>
-
-        <div class="text-center mt-4">
-            <button class="btn btn-outline-primary export-btn" onclick="exportAsPDF()">Export as PDF</button>
-            <button class="btn btn-outline-success export-btn" onclick="exportAsPNG()">Export as PNG</button>
-        </div>
-    </div>
-</div>
-
-<!-- Toast Notification -->
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
-  <div id="toast-notify" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-      <div class="toast-body" id="toast-message">Action successful!</div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-<script>
-const courses = { 1: [], 2: [] };
-
-function showToast(message, type='success') {
-    const toastEl = document.getElementById('toast-notify');
-    const toastMessage = document.getElementById('toast-message');
-
-    toastMessage.textContent = message;
-    toastEl.className = `toast align-items-center text-white bg-${type} border-0`;
-
-    const toast = new bootstrap.Toast(toastEl);
-    toast.show();
-}
-
-function saveCourses() {
-    localStorage.setItem('cgpa_courses', JSON.stringify(courses));
-}
-
-function loadCourses() {
-    const saved = localStorage.getItem('cgpa_courses');
-    if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed && typeof parsed === 'object') {
-            courses[1] = parsed[1] || [];
-            courses[2] = parsed[2] || [];
-        }
-    }
-    renderCourses(1);
-    renderCourses(2);
-    calculateGPA();
-}
-
-function addCourse(semester) {
-    const code = document.getElementById('course-code').value.trim();
-    const title = document.getElementById('course-title').value.trim();
-    const units = parseInt(document.getElementById('course-units').value);
-    const score = parseInt(document.getElementById('course-score').value);
-
-    if (!code || !title || isNaN(score) || isNaN(units)) {
-        alert('Please fill all fields with valid values');
-        return;
-    }
-
-    courses[semester].push({ code, title, units, score });
-    renderCourses(semester);
-    calculateGPA();
-    saveCourses();
-
-    document.getElementById('course-code').value = '';
-    document.getElementById('course-title').value = '';
-    document.getElementById('course-units').value = '';
-    document.getElementById('course-score').value = '';
-    document.getElementById('course-code').focus();
-
-    showToast(`Course added to Semester ${semester}`, 'success');
-}
-
-function removeCourse(semester, index) {
-    courses[semester].splice(index, 1);
-    renderCourses(semester);
-    calculateGPA();
-    saveCourses();
-    showToast(`Course removed from Semester ${semester}`, 'danger');
-}
-
-function renderCourses(semester) {
-    const tbody = document.getElementById(`semester${semester}-courses`);
-    tbody.innerHTML = '';
-
-    courses[semester].forEach((course, index) => {
-        const grade = calculateGrade(course.score);
-        const gradePoint = calculateGradePoint(course.score);
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${course.code}</td>
-            <td>${course.title}</td>
-            <td>${course.units}</td>
-            <td>${course.score}</td>
-            <td>${grade}</td>
-            <td>${gradePoint.toFixed(1)}</td>
-            <td class="remove-btn">
-                <button class="btn btn-danger btn-sm" onclick="removeCourse(${semester}, ${index})">Remove</button>
-            </td>
-        `;
-        tbody.appendChild(row);
-    });
-}
-
-function calculateGrade(score) {
-    if (score >= 70) return 'A';
-    if (score >= 60) return 'B';
-    if (score >= 50) return 'C';
-    if (score >= 40) return 'D';
-    if (score >= 30) return 'E';
-    return 'F';
-}
-
-function calculateGradePoint(score) {
-    if (score >= 70) return 5.0;
-    if (score >= 60) return 4.0;
-    if (score >= 50) return 3.0;
-    if (score >= 40) return 2.0;
-    if (score >= 30) return 1.0;
-    return 0.0;
-}
-
-function calculateGPA() {
-    const results = { 1: { gpa: 0, units: 0 }, 2: { gpa: 0, units: 0 } };
-
-    for (const semester in courses) {
-        let totalPoints = 0;
-        let totalUnits = 0;
-
-        courses[semester].forEach(course => {
-            const points = calculateGradePoint(course.score);
-            totalPoints += points * course.units;
-            totalUnits += course.units;
-        });
-
-        results[semester].gpa = totalUnits > 0 ? totalPoints / totalUnits : 0;
-        results[semester].units = totalUnits;
-    }
-
-    const totalAllUnits = results[1].units + results[2].units;
-    const totalAllPoints = (results[1].gpa * results[1].units) + (results[2].gpa * results[2].units);
-    const cgpa = totalAllUnits > 0 ? totalAllPoints / totalAllUnits : 0;
-
-    document.getElementById('semester1-gpa').textContent = results[1].gpa.toFixed(2);
-    document.getElementById('semester2-gpa').textContent = results[2].gpa.toFixed(2);
-    document.getElementById('cgpa').textContent = cgpa.toFixed(2);
-
-    const classification = document.getElementById('classification');
-    if (cgpa >= 4.5) {
-        classification.textContent = "Congratulations! You are a First Class student.";
-    } else if (cgpa >= 3.5) {
-        classification.textContent = "Second Class Upper Division";
-    } else if (cgpa >= 2.5) {
-        classification.textContent = "Second Class Lower Division";
-    } else if (cgpa >= 1.5) {
-        classification.textContent = "Third Class";
-    } else {
-        classification.textContent = "You can do better next time!";
-    }
-}
-
-function exportAsPDF() {
-    const element = document.querySelector('.calculator-card');
-    const opt = {
-        margin: 10,
-        filename: 'CGPA_Results.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    html2pdf().from(element).set(opt).save();
-}
-
-function exportAsPNG() {
-    const element = document.querySelector('.calculator-card');
-    html2canvas(element).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'CGPA_Results.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-    });
-}
-
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-}
-
-// Load saved courses on page load
-window.onload = loadCourses;
-</script>
-
-</body>
 </html>
