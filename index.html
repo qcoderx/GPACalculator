@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CGPA Calculator</title>
   <link rel="stylesheet" href="styles.css" />
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
+
   <div class="container">
 
     <!-- Header -->
@@ -16,20 +16,22 @@
       <p>Created by Platinum</p>
     </header>
 
-    <!-- Semester Switch -->
+    <!-- Semester Toggle Buttons -->
     <nav class="semester-switcher">
       <button class="tab-btn active" data-tab="semester1">Semester 1</button>
       <button class="tab-btn" data-tab="semester2">Semester 2</button>
     </nav>
 
-    <!-- Course Inputs -->
+    <!-- Course Inputs for Semesters -->
     <main>
+      <!-- Semester 1 -->
       <div id="semester1" class="tab-content active">
         <h2>Semester 1 Courses</h2>
         <div id="courses1" class="courses"></div>
         <button id="add-course1" class="add-course-btn">Add Course</button>
       </div>
 
+      <!-- Semester 2 -->
       <div id="semester2" class="tab-content">
         <h2>Semester 2 Courses</h2>
         <div id="courses2" class="courses"></div>
@@ -37,19 +39,19 @@
       </div>
     </main>
 
-    <!-- Footer Button -->
+    <!-- Calculate Button -->
     <footer>
       <button id="calculate-gpa" class="calculate-gpa-btn">Calculate GPA</button>
       <div id="results"></div>
     </footer>
 
-    <!-- Footer Contact -->
+    <!-- Footer Contact Info -->
     <div class="footer">
       <p>This CGPA Calculator was created by Platinum to help students track their academic performance.</p>
       <p>Contact Information:</p>
       <ul>
-        <li><i class="fab fa-whatsapp"></i> WhatsApp: <a href="https://wa.me/2349025713730">+2349025713730</a></li>
-        <li><i class="fas fa-envelope"></i> Email: <a href="mailto:qlasisi15@gmail.com">qlasisi15@gmail.com</a></li>
+        <li>📱 WhatsApp: <a href="https://wa.me/2349025713730">+2349025713730</a></li>
+        <li>📧 Email: <a href="mailto:qlasisi15@gmail.com">qlasisi15@gmail.com</a></li>
       </ul>
       <p>&copy; 2023 CGPA Calculator by Platinum. All rights reserved.</p>
     </div>
@@ -101,13 +103,13 @@ header p {
   margin-top: 5px;
 }
 
-/* SEMESTER SWITCHER */
+/* SEMESTER SWITCHER - TABS */
 .semester-switcher {
   display: flex;
   justify-content: space-between;
   background-color: #eee;
-  border-bottom: 2px solid #ddd;
   position: relative;
+  border-bottom: 2px solid #ddd;
 }
 
 .tab-btn {
@@ -128,6 +130,17 @@ header p {
 /* MAIN CONTENT */
 main {
   padding: 20px;
+}
+
+.tab-content {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tab-content.active {
+  display: block;
+  opacity: 1;
 }
 
 .courses {
