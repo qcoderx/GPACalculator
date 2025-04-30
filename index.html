@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Calculator by Platinum</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        /* Main Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        .calculator-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        h1, h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        
+        /* Semester Tabs */
+        .semester-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .semester-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .semester-tab.active {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        /* Course Table */
+        .course-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .course-table th, .course-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .course-table th {
+            background-color: #2c3e50;
+            color: white;
+        }
+        
+        .course-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        select.form-control {
+            height: 36px;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-success {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        
+        /* Results Section */
+        .results-section {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .result-item {
+            margin-bottom: 10px;
+        }
+        
+        .result-value {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .classification {
+            font-weight: bold;
+            color: #27ae60;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+        }
+        
+        /* Export Buttons */
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .semester-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .semester-tab {
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="header">
+            <h1>CGPA Calculator</h1>
+            <p>Created by Platinum</p>
+        </div>
+        
+        <div class="export-buttons">
+            <button class="btn btn-primary" onclick="exportAsPDF()">Export as PDF</button>
+            <button class="btn btn-primary" onclick="exportAsPNG()">Export as PNG</button>
+        </div>
+        
+        <div class="semester-tabs">
+            <div class="semester-tab active" onclick="switchSemester(1)">Semester 1</div>
+            <div class="semester-tab" onclick="switchSemester(2)">Semester 2</div>
+        </div>
+        
+        <div id="semester1-courses">
+            <h2>Semester 1 Courses</h2>
+            <table class="course-table">
+                <thead>
+                    <tr>
+                        <th>Course Code</th>
+                        <th>Course Title</th>
+                        <th>Units</th>
+                        <th>Score</th>
+                        <th>Grade</th>
+                        <th>Grade Point</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="semester1-courses-body">
+                    <!-- Courses will be added here -->
+                </tbody>
+            </table>
+            
+            <div class="form-group">
+                <label for="course-code">Course Code</label>
+                <input type="text" id="course-code" class="form-control" placeholder="e.g., MTH101">
+            </div>
+            
+            <div class="form-group">
+                <label for="course-title">Course Title</label>
+                <input type="text" id="course-title" class="form-control" placeholder="e.g., General Mathematics">
+            </div>
+            
+            <div class="form-group">
+                <label for="course-units">Units</label>
+                <select id="course-units" class="form-control">
+                    <option value="1">1</option>
+                    <option value="2" selected>2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="course-score">Score</label>
+                <input type="number" id="course-score" class="form-control" placeholder="0-100" min="0" max="100">
+            </div>
+            
+            <button class="btn btn-success" onclick="addCourse(1)">Add Course</button>
+            <button class="btn btn-primary" onclick="calculateGPA()">Calculate GPA</button>
+        </div>
+        
+        <div id="semester2-courses" style="display: none;">
+            <!-- Semester 2 content would be similar to Semester 1 -->
+        </div>
+        
+        <div class="results-section">
+            <h2>Results</h2>
+            <div class="results-grid">
+                <div class="result-item">
+                    <p>Semester 1 GPA</p>
+                    <p class="result-value" id="semester1-gpa">0.00</p>
+                </div>
+                <div class="result-item">
+                    <p>Semester 2 GPA</p>
+                    <p class="result-value" id="semester2-gpa">0.00</p>
+                </div>
+                <div class="result-item">
+                    <p>CGPA</p>
+                    <p class="result-value" id="cgpa">0.00</p>
+                </div>
+            </div>
+            <p class="classification" id="classification"></p>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <h3>About This Calculator</h3>
+        <p>This CGPA Calculator was created by Platinum to help students track their academic performance. The calculator uses a 5-point grading system and considers course units for accurate GPA calculation.</p>
+        
+        <h3>Contact Information</h3>
+        <p>WhatsApp: <a href="https://wa.me/2349025713730">+234 902 571 3730</a></p>
+        <p>Email: <a href="mailto:qlasisil5@gmail.com">qlasisil5@gmail.com</a></p>
+        
+        <p>© 2023 CGPA Calculator by Platinum. All rights reserved.</p>
+    </div>
+
+    <script>
+        // Global variables
+        let currentSemester = 1;
+        let courses = {
+            1: [
+                { code: "MTH101", title: "General Mathematics", units: 2, score: 70 },
+                { code: "CSC101", title: "Introduction to Computer Science", units: 3, score: 70 },
+                { code: "CYB105", title: "Introduction to Data Analysis", units: 2, score: 60 }
+            ],
+            2: []
+        };
+
+        // Initialize the calculator
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCourses(1);
+            calculateGPA();
+        });
+
+        // Switch between semesters
+        function switchSemester(semester) {
+            currentSemester = semester;
+            document.getElementById('semester1-courses').style.display = semester === 1 ? 'block' : 'none';
+            document.getElementById('semester2-courses').style.display = semester === 2 ? 'block' : 'none';
+            
+            // Update active tab
+            document.querySelectorAll('.semester-tab').forEach((tab, index) => {
+                tab.classList.toggle('active', index === semester - 1);
+            });
+            
+            renderCourses(semester);
+        }
+
+        // Add a new course
+        function addCourse(semester) {
+            const code = document.getElementById('course-code').value.trim();
+            const title = document.getElementById('course-title').value.trim();
+            const units = parseInt(document.getElementById('course-units').value);
+            const score = parseInt(document.getElementById('course-score').value);
+            
+            if (!code || !title || isNaN(score)) {
+                alert('Please fill all fields correctly');
+                return;
+            }
+            
+            courses[semester].push({ code, title, units, score });
+            renderCourses(semester);
+            calculateGPA();
+            
+            // Clear form
+            document.getElementById('course-code').value = '';
+            document.getElementById('course-title').value = '';
+            document.getElementById('course-score').value = '';
+        }
+
+        // Remove a course
+        function removeCourse(semester, index) {
+            courses[semester].splice(index, 1);
+            renderCourses(semester);
+            calculateGPA();
+        }
+
+        // Render courses for a semester
+        function renderCourses(semester) {
+            const tbody = document.getElementById(`semester${semester}-courses-body`);
+            tbody.innerHTML = '';
+            
+            courses[semester].forEach((course, index) => {
+                const grade = calculateGrade(course.score);
+                const gradePoint = calculateGradePoint(course.score);
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${course.code}</td>
+                    <td>${course.title}</td>
+                    <td>${course.units}</td>
+                    <td>${course.score}</td>
+                    <td>${grade}</td>
+                    <td>${gradePoint.toFixed(1)}</td>
+                    <td><button class="btn btn-danger" onclick="removeCourse(${semester}, ${index})">Remove</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Calculate grades
+        function calculateGrade(score) {
+            if (score >= 70) return 'A';
+            if (score >= 60) return 'B';
+            if (score >= 50) return 'C';
+            if (score >= 40) return 'D';
+            if (score >= 30) return 'E';
+            return 'F';
+        }
+
+        function calculateGradePoint(score) {
+            if (score >= 70) return 5.0;
+            if (score >= 60) return 4.0;
+            if (score >= 50) return 3.0;
+            if (score >= 40) return 2.0;
+            if (score >= 30) return 1.0;
+            return 0.0;
+        }
+
+        // Calculate GPA and CGPA
+        function calculateGPA() {
+            // Calculate semester GPAs
+            const semesterGPA = {};
+            const semesterUnits = {};
+            
+            for (const semester in courses) {
+                let totalGradePoints = 0;
+                let totalUnits = 0;
+                
+                courses[semester].forEach(course => {
+                    const gradePoint = calculateGradePoint(course.score);
+                    totalGradePoints += gradePoint * course.units;
+                    totalUnits += course.units;
+                });
+                
+                semesterGPA[semester] = totalUnits > 0 ? totalGradePoints / totalUnits : 0;
+                semesterUnits[semester] = totalUnits;
+            }
+            
+            // Calculate CGPA
+            let cgpa = 0;
+            let totalAllUnits = 0;
+            let totalAllGradePoints = 0;
+            
+            for (const semester in semesterGPA) {
+                totalAllGradePoints += semesterGPA[semester] * semesterUnits[semester];
+                totalAllUnits += semesterUnits[semester];
+            }
+            
+            cgpa = totalAllUnits > 0 ? totalAllGradePoints / totalAllUnits : 0;
+            
+            // Update UI
+            document.getElementById('semester1-gpa').textContent = semesterGPA[1].toFixed(2);
+            document.getElementById('semester2-gpa').textContent = semesterGPA[2].toFixed(2);
+            document.getElementById('cgpa').textContent = cgpa.toFixed(2);
+            
+            // Update classification
+            const classification = document.getElementById('classification');
+            if (cgpa >= 4.5) {
+                classification.textContent = "Congratulations! You are a First Class student.";
+            } else if (cgpa >= 3.5) {
+                classification.textContent = "Second Class Upper Division";
+            } else if (cgpa >= 2.5) {
+                classification.textContent = "Second Class Lower Division";
+            } else if (cgpa >= 1.5) {
+                classification.textContent = "Third Class";
+            } else {
+                classification.textContent = "You can do better next time!";
+            }
+        }
+
+        // Export functions
+        function exportAsPDF() {
+            const element = document.querySelector('.calculator-container');
+            const opt = {
+                margin: 10,
+                filename: 'CGPA_Results.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            html2pdf().from(element).set(opt).save();
+        }
+
+        function exportAsPNG() {
+            const element = document.querySelector('.calculator-container');
+            
+            html2canvas(element).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'CGPA_Results.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
