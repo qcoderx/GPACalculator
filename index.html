@@ -1,301 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CGPA Calculator</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CGPA Calculator</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>CGPA Calculator</h1>
-            <p>Created by Platinum</p>
-            <button id="export-pdf">Export as PDF</button>
-            <button id="export-png">Export as PNG</button>
-        </header>
+  <div class="container">
 
-        <nav>
-            <table class="semester-table">
-                <tr>
-                    <td><button class="tab-btn active" data-tab="semester1">Semester 1</button></td>
-                    <td><button class="tab-btn" data-tab="semester2">Semester 2</button></td>
-                </tr>
-            </table>
-        </nav>
+    <!-- Header -->
+    <header>
+      <h1>CGPA CALCULATOR</h1>
+      <p>Created by Platinum</p>
+    </header>
 
-        <main>
-            <div id="semester1" class="tab-content active">
-                <h2>Semester 1 Courses</h2>
-                <div id="courses1" class="courses">
-                    <!-- Course fields will be dynamically added here -->
-                </div>
-                <button id="add-course1" class="add-course-btn">Add Course</button>
-            </div>
+    <!-- Semester Switch -->
+    <nav class="semester-switcher">
+      <button class="tab-btn active" data-tab="semester1">Semester 1</button>
+      <button class="tab-btn" data-tab="semester2">Semester 2</button>
+    </nav>
 
-            <div id="semester2" class="tab-content">
-                <h2>Semester 2 Courses</h2>
-                <div id="courses2" class="courses">
-                    <!-- Course fields will be dynamically added here -->
-                </div>
-                <button id="add-course2" class="add-course-btn">Add Course</button>
-            </div>
-        </main>
+    <!-- Course Inputs -->
+    <main>
+      <div id="semester1" class="tab-content active">
+        <h2>Semester 1 Courses</h2>
+        <div id="courses1" class="courses"></div>
+        <button id="add-course1" class="add-course-btn">Add Course</button>
+      </div>
 
-        <footer>
-            <button id="calculate-gpa" class="calculate-gpa-btn">Calculate GPA</button>
-            <div id="results"></div>
-        </footer>
-    </div>
+      <div id="semester2" class="tab-content">
+        <h2>Semester 2 Courses</h2>
+        <div id="courses2" class="courses"></div>
+        <button id="add-course2" class="add-course-btn">Add Course</button>
+      </div>
+    </main>
 
+    <!-- Footer Button -->
+    <footer>
+      <button id="calculate-gpa" class="calculate-gpa-btn">Calculate GPA</button>
+      <div id="results"></div>
+    </footer>
+
+    <!-- Footer Contact -->
     <div class="footer">
-        <p>This CGPA Calculator was created by Platinum to help students track their academic performance.</p>
-        <p>Contact Information:</p>
-        <ul>
-            <li><i class="fab fa-whatsapp"></i> WhatsApp: <a href="https://wa.me/2349025713730">Message me on whatsapp</a></li>
-            <li><i class="fas fa-envelope"></i> Email: <a href="mailto:qlasisi15@gmail.com">qlasisi15@gmail.com</a></li>
-        </ul>
-        <p>&copy; 2025 CGPA Calculator by Platinum. All rights reserved.</p>
+      <p>This CGPA Calculator was created by Platinum to help students track their academic performance.</p>
+      <p>Contact Information:</p>
+      <ul>
+        <li><i class="fab fa-whatsapp"></i> WhatsApp: <a href="https://wa.me/2349025713730">+2349025713730</a></li>
+        <li><i class="fas fa-envelope"></i> Email: <a href="mailto:qlasisi15@gmail.com">qlasisi15@gmail.com</a></li>
+      </ul>
+      <p>&copy; 2023 CGPA Calculator by Platinum. All rights reserved.</p>
     </div>
 
-    <script src="script.js"></script>
+  </div>
+
+  <!-- Script -->
+  <script src="script.js"></script>
 </body>
 <style>
     /* Reset */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-    line-height: 1.6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  line-height: 1.6;
 }
 
 .container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* HEADER */
 header {
-    text-align: center;
-    margin-bottom: 20px;
+  background-color: #673ab7;
+  color: white;
+  text-align: center;
+  padding: 20px;
 }
 
 header h1 {
-    color: #333;
-    font-size: 32px;
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 24px;
+  font-weight: bold;
 }
 
 header p {
-    color: #666;
-    font-size: 18px;
-    margin-top: 5px;
+  font-size: 14px;
+  margin-top: 5px;
 }
 
-header button {
-    margin: 10px 5px;
-    padding: 10px 20px;
-    font-size: 14px;
-    background: #673ab7;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-header button:hover {
-    background: #5c35a1;
-}
-
-nav {
-    margin: 20px 0;
-}
-
-.semester-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.semester-table td {
-    padding: 10px;
-    text-align: center;
+/* SEMESTER SWITCHER */
+.semester-switcher {
+  display: flex;
+  justify-content: space-between;
+  background-color: #eee;
+  border-bottom: 2px solid #ddd;
+  position: relative;
 }
 
 .tab-btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    background: #fff;
-    color: #333;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
+  flex: 1;
+  padding: 15px 0;
+  background-color: transparent;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .tab-btn.active {
-    background: #673ab7;
-    color: #fff;
+  background-color: #673ab7;
+  color: white;
 }
 
-.tab-content {
-    display: none;
-    transition: opacity 0.3s ease;
-}
-
-.tab-content.active {
-    display: block;
-    opacity: 1;
+/* MAIN CONTENT */
+main {
+  padding: 20px;
 }
 
 .courses {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .course {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 15px;
+  background-color: #fafafa;
 }
 
 .course label {
-    font-size: 14px;
-    margin-bottom: 5px;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 5px;
 }
 
-.course input, .course select {
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
+.course input,
+.course select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 8px;
 }
 
 .course .remove-btn {
-    margin-top: 10px;
-    padding: 10px;
-    background: #e74c3c;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  float: right;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .course .remove-btn:hover {
-    background: #cf3a2d;
+  background-color: #c0392b;
 }
 
 .add-course-btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    background: #673ab7;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.3s ease;
+  background-color: #673ab7;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
 }
 
 .add-course-btn:hover {
-    background: #5c35a1;
+  background-color: #5c35a1;
+}
+
+/* FOOTER BUTTON */
+footer {
+  padding: 20px;
+  text-align: center;
 }
 
 .calculate-gpa-btn {
-    display: block;
-    margin: 0 auto;
-    padding: 15px 40px;
-    font-size: 18px;
-    background: #673ab7;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    width: 80%; /* Horizontally longer */
+  background-color: #673ab7;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  width: 90%;
+  max-width: 400px;
 }
 
 .calculate-gpa-btn:hover {
-    background: #5c35a1;
-}
-
-footer {
-    margin-top: 20px;
+  background-color: #5c35a1;
 }
 
 #results {
-    margin-top: 20px;
-    padding: 20px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-#results h2 {
-    color: #333;
-    font-size: 20px;
-}
-
-#results p {
-    margin: 10px 0;
-    font-size: 16px;
-}
-
-#results table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-#results table th, #results table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-
-#results table th {
-    background: #f4f4f9;
-}
-
-#results .classification {
-    background: #dff0d8;
-    padding: 10px;
-    border: 1px solid #d6e9c6;
-    border-radius: 5px;
-    margin-top: 20px;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 .footer {
-    margin-top: 20px;
-    padding: 20px;
-    background: #2c3e50;
-    color: #fff;
-    text-align: center;
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #2c3e50;
+  color: white;
+  text-align: center;
+  font-size: 14px;
 }
 
 .footer a {
-    color: #fff;
-    text-decoration: none;
+  color: #8fcce8;
+  text-decoration: none;
 }
 
-.footer a:hover {
-    text-decoration: underline;
-}
-
-.fab, .fas {
-    margin-right: 5px;
+.footer i {
+  margin-right: 5px;
 }
 </style>
 </html>
