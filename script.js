@@ -2,28 +2,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const tabButtons = document.querySelectorAll('.tab-btn');
   const tabContents = document.querySelectorAll('.tab-content');
 
-  // Tab switching animation
+  // Tab switching logic
   tabButtons.forEach(button => {
     button.addEventListener('click', () => {
       tabButtons.forEach(btn => btn.classList.remove('active'));
       button.classList.add('active');
 
-      tabContents.forEach(content => content.classList.remove('active'));
-      const target = document.getElementById(button.dataset.tab);
-      target.classList.add('active');
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      const targetTab = document.getElementById(button.dataset.tab);
+      targetTab.classList.add('active');
     });
   });
 
-  // Add default courses to both semesters
-  function createDefaultCourses() {
-    for (let i = 1; i <= 2; i++) {
-      const coursesDiv = document.getElementById(`courses${i}`);
-      for (let j = 0; j < 3; j++) {
-        addCourseField(i, coursesDiv);
-      }
-    }
-  }
-
+  // Function to add course field
   function addCourseField(semesterId, coursesDiv) {
     const count = coursesDiv.childElementCount;
 
@@ -55,7 +49,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initialize default courses
+  // Initialize default 3 courses per semester
+  function createDefaultCourses() {
+    for (let i = 1; i <= 2; i++) {
+      const coursesDiv = document.getElementById(`courses${i}`);
+      for (let j = 0; j < 3; j++) {
+        addCourseField(i, coursesDiv);
+      }
+    }
+  }
+
   createDefaultCourses();
 
   // Dynamic course adding
@@ -67,20 +70,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Calculate GPA
+  // GPA Calculation Logic
   document.getElementById('calculate-gpa').addEventListener('click', () => {
     const resultsDiv = document.getElementById('results');
-    const semester1Data = getCourseData('courses1');
-    const semester2Data = getCourseData('courses2');
+    const sem1Data = getCourseData('courses1');
+    const sem2Data = getCourseData('courses2');
 
-    const gpa1 = calculateGPA(semester1Data);
-    const gpa2 = calculateGpa(semester2Data);
+    const gpa1 = calculateGPA(sem1Data);
+    const gpa2 = calculateGPA(sem2Data);
 
-    const totalCredits = (semester1Data.reduce((sum, c) => sum + c.units, 0) || 0)
-                       + (semester2Data.reduce((sum, c) => sum + c.units, 0) || 0);
+    const totalCredits = (sem1Data.reduce((sum, c) => sum + c.units, 0) || 0)
+                       + (sem2Data.reduce((sum, c) => sum + c.units, 0) || 0);
 
-    const totalPoints = (semester1Data.reduce((sum, c) => sum + (c.gradePoint * c.units), 0) || 0)
-                      + (semester2Data.reduce((sum, c) => sum + (c.gradePoint * c.units), 0) || 0);
+    const totalPoints = (sem1Data.reduce((sum, c) => sum + (c.gradePoint * c.units), 0) || 0)
+                      + (sem2Data.reduce((sum, c) => sum + (c.gradePoint * c.units), 0) || 0);
 
     const cgpa = totalCredits ? (totalPoints / totalCredits).toFixed(2) : 0;
 
@@ -89,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <p>Semester 1 GPA: ${gpa1}</p>
       <p>Semester 2 GPA: ${gpa2}</p>
       <p>CGPA: ${cgpa}</p>
-      <p>${getClassification(cgpa)}</p>
+      <p style="margin-top:15px;">${getClassification(cgpa)}</p>
     `;
   });
 
